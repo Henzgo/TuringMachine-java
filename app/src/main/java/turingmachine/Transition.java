@@ -4,19 +4,31 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Transition {
-    private HashMap<String, List<Character>> transitions;
-    private String input;
-    private String startState;
-    private String state;
-    private int inputNumber;
-    private int outputNumber;
-    private Direction direction;
+    private String nextState;
+    private int write;
+    private char move; // 'L' for left, 'R' for right
 
-    public Transition(String input) {
-        this.input = input;
+    public Transition(String nextState, int write, char move) {
+        this.nextState = nextState;
+        this.write = write;
+        this.move = move;
     }
 
-    public void initialize() {
-        
+    public String getNextState() {
+        return nextState;
+    }
+
+    public int getWrite() {
+        return write;
+    }
+
+    public char getMove() {
+        return move;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + nextState + ", " + write + ", " + move + ")";
     }
 }
+
