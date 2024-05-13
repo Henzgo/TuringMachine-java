@@ -1,14 +1,11 @@
 package turingmachine;
 
-import java.util.HashMap;
-import java.util.List;
-
 public class Transition {
     private String nextState;
     private int write;
-    private char move; // 'L' for left, 'R' for right
+    private Direction move; // 'L' for left, 'R' for right
 
-    public Transition(String nextState, int write, char move) {
+    public Transition(String nextState, int write, Direction move) {
         this.nextState = nextState;
         this.write = write;
         this.move = move;
@@ -22,7 +19,7 @@ public class Transition {
         return write;
     }
 
-    public char getMove() {
+    public Direction getMove() {
         return move;
     }
 
