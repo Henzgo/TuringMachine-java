@@ -2,6 +2,9 @@ package turingmachine;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.Collection;
 
 public class TransitionTable {
     private Map<String, Map<Integer, Transition>> transitions;
@@ -21,5 +24,9 @@ public class TransitionTable {
     @Override
     public String toString() {
         return transitions.toString();
+    }
+
+    public Set<Entry<String, Map<Integer, Transition>>> getAllTransitions() {
+        return transitions.entrySet();
     }
 }

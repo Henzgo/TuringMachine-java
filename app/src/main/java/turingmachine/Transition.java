@@ -3,7 +3,7 @@ package turingmachine;
 public class Transition {
     private String nextState;
     private int write;
-    private Direction move; // 'L' for left, 'R' for right
+    private Direction move;
 
     public Transition(String nextState, int write, Direction move) {
         this.nextState = nextState;
