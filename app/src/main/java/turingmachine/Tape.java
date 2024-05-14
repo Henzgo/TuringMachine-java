@@ -8,13 +8,14 @@ public class Tape {
     private ArrayList<String> tape = new ArrayList<>();
     private String input;
     private String eingabeWort;
+    private String currentSymbol;
     private int tapeHeadPosition;
     private static final Logger LOGGER = Logger.getLogger(Tape.class.getName());
 
     public Tape(String input) {
         this.input = input;
         initialize(input);
-        fillEmpty();
+        fillEmpty(input);
         findArrayMiddle();
         converter();
     }
@@ -35,8 +36,26 @@ public class Tape {
         }
     }
 
-    private void fillEmpty() {
-        for (int index = 0; index < 35; index++) {
+    public String getCurrentSymbol() {
+        currentSymbol = tape.get(tapeHeadPosition);
+        return currentSymbol;
+    }
+
+    public void writeSymbol(String symbol) {
+        tape.set(tapeHeadPosition, symbol);
+    }
+
+    public void moveTapeHead(Direction direction) {
+        if (direction == Direction.L) {
+            tapeHeadPosition--;
+        } else if (direction == Direction.R) {
+            tapeHeadPosition++;
+        }
+        // Todo: Check if ensureCapacity method is needed.
+    }
+
+    private void fillEmpty(String input) {
+        for (int index = 0; index < input.length(); index++) {
             tape.add("");
         }
     }
@@ -47,10 +66,6 @@ public class Tape {
 
     public int getTapeHeadPosition() {
         return tapeHeadPosition;
-    }
-
-    public void setTapeHeadPosition(int tapeHeadPosition) {
-        this.tapeHeadPosition = tapeHeadPosition;
     }
     
     public void getTape() {
