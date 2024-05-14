@@ -5,14 +5,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Tape {
-    private ArrayList<Integer> tape = new ArrayList<>();
+    private ArrayList<String> tape = new ArrayList<>();
     private String input;
     private String eingabeWort;
+    private int tapeHeadPosition;
     private static final Logger LOGGER = Logger.getLogger(Tape.class.getName());
 
     public Tape(String input) {
         this.input = input;
         initialize(input);
+        fillEmpty();
+        findArrayMiddle();
         converter();
     }
 
@@ -25,17 +28,31 @@ public class Tape {
             LOGGER.log(Level.WARNING, "Es gibt kein Eingabewort!");
         }
     }
-
     public void converter() {
-        char[] charArray = eingabeWort.toCharArray();
-
-        for (char i : charArray) {
-            int digit = Character.getNumericValue(i);
-
-            tape.add(digit);
+        String[] stringArray = eingabeWort.split("");
+        for (String i : stringArray) {
+            tape.add(tapeHeadPosition, i);
         }
     }
 
+    private void fillEmpty() {
+        for (int index = 0; index < 35; index++) {
+            tape.add("");
+        }
+    }
+
+    private void findArrayMiddle() {
+        tapeHeadPosition = tape.size() / 2;
+    }
+
+    public int getTapeHeadPosition() {
+        return tapeHeadPosition;
+    }
+
+    public void setTapeHeadPosition(int tapeHeadPosition) {
+        this.tapeHeadPosition = tapeHeadPosition;
+    }
+    
     public void getTape() {
         System.out.println(this.toString());
     }
@@ -43,16 +60,9 @@ public class Tape {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int cell : tape) {
+        for (String cell : tape) {
             sb.append("[ ").append(cell).append(" ] ");
         }
         return sb.toString();
-    }
-
-    public static void main(String[] args) {
-        String input = "01001010000111101010";
-
-        Tape myTape = new Tape(input);
-        myTape.getTape();
     }
 }
