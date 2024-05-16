@@ -3,6 +3,7 @@ package turingmachine;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Arrays;
 
 public class Tape {
     private ArrayList<String> tape = new ArrayList<>();
@@ -16,7 +17,7 @@ public class Tape {
         this.input = input;
         initialize(input);
         fillEmpty(input);
-        findArrayMiddle();
+        //findArrayMiddle();
         converter();
     }
 
@@ -29,11 +30,33 @@ public class Tape {
             LOGGER.log(Level.WARNING, "Es gibt kein Eingabewort!");
         }
     }
+
+    // public void converter() {
+    //     String[] stringArray = eingabeWort.split("");
+    //     System.out.println(Arrays.toString(stringArray));
+    //     for (String i : stringArray) {
+    //         tape.add(tapeHeadPosition, i);
+    //         //System.out.println(tape.toString());
+    //     }
+    // }
+
     public void converter() {
+        int middleIndex = tape.size() / 2;  // Find the middle of the tape
         String[] stringArray = eingabeWort.split("");
-        for (String i : stringArray) {
-            tape.add(tapeHeadPosition, i);
+        int startIndex = middleIndex - stringArray.length / 2;  // Start adding input word at this index
+
+        for (int i = 0; i < stringArray.length; i++) {
+            tape.set(startIndex + i, stringArray[i]);  // Set, not add, to replace the blanks
         }
+        tapeHeadPosition = startIndex;  // Set the tape head to start at the middle of the input word
+    }
+
+    private String convertSymbol(int length) {
+        if (length == 1) return "0";
+        if (length == 2) return "1";
+        if (length == 3) return "_"; // Blank
+        // Further encoding as needed
+        return Character.toString((char) ('a' + length - 4)); // Assuming sequential character encoding after 'a'
     }
 
     public String getCurrentSymbol() {
@@ -41,16 +64,33 @@ public class Tape {
         return currentSymbol;
     }
 
+    public int getCurrentSymbolIndex() {
+        String currentSymbol = tape.get(tapeHeadPosition);
+        return symbolToIndex(currentSymbol);
+    }
+
+    private int symbolToIndex(String symbol) {
+        switch (symbol) {
+            case "_": return 2;  // Assuming "_" maps to 2 based on your encoding
+            case "0": return 0;
+            case "1": return 1;
+            // Add more cases as needed
+            default:
+                // Handle unknown symbols, perhaps throw an exception or default to 0
+                return 0;
+        }
+    }
+
     public void writeSymbol(String symbol) {
         tape.set(tapeHeadPosition, symbol);
     }
 
     public void moveTapeHead(Direction direction) {
-        if (direction == Direction.L) {
+        if (direction == Direction.L && tapeHeadPosition > 0) {
             if (tapeHeadPosition > 0) tapeHeadPosition--;
         } else if (direction == Direction.R) {
             if (tapeHeadPosition < tape.size() - 1) tapeHeadPosition++;
-            else tape.add("");
+            else tape.add("_");
         }
     }
 
@@ -69,7 +109,7 @@ public class Tape {
 
     private void fillEmpty(String input) {
         for (int index = 0; index < input.length(); index++) {
-            tape.add("");
+            tape.add("_");
         }
     }
 
