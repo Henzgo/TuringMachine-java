@@ -32,12 +32,12 @@ public class Tape {
     public void converter() {
         int middleIndex = tape.size() / 2;
         String[] stringArray = eingabeWort.split("");
-        int startIndex = middleIndex - stringArray.length / 2;  // Start adding input word at this index
+        int startIndex = middleIndex - stringArray.length / 2;
 
         for (int i = 0; i < stringArray.length; i++) {
-            tape.set(startIndex + i, stringArray[i]);  // Set, not add, to replace the blanks
+            tape.set(startIndex + i, stringArray[i]);
         }
-        tapeHeadPosition = startIndex;  // Set the tape head to start at the middle of the input word
+        tapeHeadPosition = startIndex;
     }
 
     public String getCurrentSymbol() {
@@ -45,19 +45,32 @@ public class Tape {
         return currentSymbol;
     }
 
+    // public int getCurrentSymbolIndex() {
+    //     String currentSymbol = tape.get(tapeHeadPosition);
+    //     return symbolToIndex(currentSymbol);
+    // }
+
+    // private int symbolToIndex(String symbol) {
+    //     switch (symbol) {
+    //         case "_": return 2;
+    //         case "0": return 0;
+    //         case "1": return 1;
+    //         default:
+    //             return 0;
+    //     }
+    // }
+
     public int getCurrentSymbolIndex() {
-        String currentSymbol = tape.get(tapeHeadPosition);
-        return symbolToIndex(currentSymbol);
+        String currentSymbol = getCurrentSymbol();
+        return convertSymbolToIndex(currentSymbol);
     }
 
-    private int symbolToIndex(String symbol) {
-        switch (symbol) {
-            case "_": return 2;
-            case "0": return 0;
-            case "1": return 1;
-            default:
-                return 0;
-        }
+    private int convertSymbolToIndex(String symbol) {
+        if (symbol.equals("0")) return 0;
+        if (symbol.equals("1")) return 1;
+        if (symbol.equals("_")) return 2;
+        if (symbol.charAt(0) >= 'a' && symbol.charAt(0) <= 'c') return symbol.charAt(0) - 'a' + 3;
+        return 0;
     }
 
     public void writeSymbol(String symbol) {

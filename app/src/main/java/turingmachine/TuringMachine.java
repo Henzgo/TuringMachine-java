@@ -22,16 +22,53 @@ public class TuringMachine {
         parseAndLoadTransitions(transitionsPart);
     }
 
+    // public void execute(boolean stepMode) {
+    //     boolean isActive = true;
+    //     while (isActive && !currentState.equals("HALT")) {
+    //         //String currentSymbol = tape.getCurrentSymbol();
+    //         int symbolIndex = tape.getCurrentSymbolIndex();
+    
+    //         System.out.println("Current State: " + currentState);
+    //         //System.out.println("Current Symbol (index): " + currentSymbol + " (" + symbolIndex + ")");
+    //         tape.printTapeWindow(30);
+    //         System.out.println("Step Count: " + stepCount);
+    
+    //         Transition transition = transitionTable.getTransition(currentState, symbolIndex);
+    //         if (transition == null) {
+    //             //System.out.println("No transition found for state " + currentState + " and symbol " + currentSymbol + ". Halting.");
+    //             isActive = false;
+    //             break;
+    //         }
+    
+    //         String symbolToWrite = convertIndexToSymbol(transition.getWrite());
+    //         //tape.writeSymbol(String.valueOf(transition.getWrite()));
+    //         tape.writeSymbol(symbolToWrite);
+    //         tape.moveTapeHead(transition.getMove());
+    //         currentState = transition.getNextState();
+    //         stepCount++;
+    
+    //         if (stepMode) {
+    //             System.out.println("Press enter to continue...");
+    //             scanner.nextLine();
+    //         }
+    //     }
+    
+    //     if (!stepMode) {
+    //         System.out.println("Final Tape State:");
+    //         tape.printTapeWindow(30);
+    //     }
+    // }
+
     public void execute(boolean stepMode) {
         boolean isActive = true;
         while (isActive && !currentState.equals("HALT")) {
             String currentSymbol = tape.getCurrentSymbol();
-            int symbolIndex = tape.getCurrentSymbolIndex();
+            int symbolIndex = convertSymbolToIndex(currentSymbol);
     
-            System.out.println("Current State: " + currentState);
+            //System.out.println("Current State: " + currentState);
             //System.out.println("Current Symbol (index): " + currentSymbol + " (" + symbolIndex + ")");
-            tape.printTapeWindow(30);
-            System.out.println("Step Count: " + stepCount);
+            //tape.printTapeWindow(30);
+            //System.out.println("Step Count: " + stepCount);
     
             Transition transition = transitionTable.getTransition(currentState, symbolIndex);
             if (transition == null) {
@@ -41,7 +78,6 @@ public class TuringMachine {
             }
     
             String symbolToWrite = convertIndexToSymbol(transition.getWrite());
-            //tape.writeSymbol(String.valueOf(transition.getWrite()));
             tape.writeSymbol(symbolToWrite);
             tape.moveTapeHead(transition.getMove());
             currentState = transition.getNextState();
@@ -54,16 +90,27 @@ public class TuringMachine {
         }
     
         if (!stepMode) {
+            System.out.println("Step Count: " + stepCount);
             System.out.println("Final Tape State:");
             tape.printTapeWindow(30);
         }
     }
+    
 
     private String convertIndexToSymbol(int index) {
         if (index == 0) return "0";
         if (index == 1) return "1";
+        if (index == 2) return "_";
         if (index >= 3) return Character.toString((char) ('a' + index - 3));
         return "_";
+    }
+
+    private int convertSymbolToIndex(String symbol) {
+        if (symbol.equals("0")) return 0;
+        if (symbol.equals("1")) return 1;
+        if (symbol.equals("_")) return 2;
+        if (symbol.charAt(0) >= 'a' && symbol.charAt(0) <= 'c') return symbol.charAt(0) - 'a' + 3;
+        return 0;
     }
 
     private void parseAndLoadTransitions(String encoded) {
@@ -89,4 +136,24 @@ public class TuringMachine {
         }
         System.out.println("Transitions loaded.");
     }
+
+    // private void parseAndLoadTransitions(String encoded) {
+    //     String[] transitions = encoded.split("11");
+    //     System.out.println("Loading transitions...");
+    //     for (String transition : transitions) {
+    //         String[] elements = transition.split("1");
+    //         if (elements.length < 5) continue;
+    
+    //         String currentState = "q" + (elements[0].length() + 1);
+    //         int readSymbol = elements[1].length(); // Don't subtract 1, use length directly
+    //         String nextState = "q" + (elements[2].length() + 1);
+    //         int writeSymbol = elements[3].length(); // Don't subtract 1
+    //         Direction moveDirection = elements[4].length() == 1 ? Direction.R : Direction.L;
+    
+    //         Transition newTransition = new Transition(nextState, writeSymbol, moveDirection);
+    //         transitionTable.addTransition(currentState, readSymbol, newTransition);
+    //         System.out.println("Added transition from " + currentState + " on symbol " + readSymbol + " to " + nextState + " with write " + writeSymbol + " and move " + moveDirection);
+    //     }
+    //     System.out.println("Transitions loaded.");
+    // }
 }
