@@ -15,10 +15,9 @@ public class TuringMachine {
         this.input = input;
         stepCount = 0;
         this.currentState = "q1";
-        // Split the input at "111", use the first part for transitions, the entire string for the tape
-        String[] parts = input.split("111", 2); // Split into 2 parts only
+        String[] parts = input.split("111", 2);
         String transitionsPart = parts[0];
-        this.tape = new Tape(input); // The Tape class handles its own initialization
+        this.tape = new Tape(input);
         this.transitionTable = new TransitionTable();
         parseAndLoadTransitions(transitionsPart);
     }
@@ -27,10 +26,10 @@ public class TuringMachine {
         boolean isActive = true;
         while (isActive && !currentState.equals("HALT")) {
             String currentSymbol = tape.getCurrentSymbol();
-            int symbolIndex = tape.getCurrentSymbolIndex();  // Use new method here
+            int symbolIndex = tape.getCurrentSymbolIndex();
     
             System.out.println("Current State: " + currentState);
-            System.out.println("Current Symbol (index): " + currentSymbol + " (" + symbolIndex + ")");
+            //System.out.println("Current Symbol (index): " + currentSymbol + " (" + symbolIndex + ")");
             tape.printTapeWindow(30);
             System.out.println("Step Count: " + stepCount);
     
@@ -89,15 +88,5 @@ public class TuringMachine {
             System.out.println("Added transition from " + currentState + " on symbol " + readSymbol + " to " + nextState + " with write " + writeSymbol + " and move " + moveDirection);
         }
         System.out.println("Transitions loaded.");
-    }
-
-
-
-    public static void main(String[] args) {
-        TuringMachine test = new TuringMachine("010010000100100110000101000101001100001000100100001001100010010000100000100110001010101001111001");
-        test.tape.getTape();
-        System.out.println(test.transitionTable.getAllTransitions());
-        System.out.println(test.transitionTable.getStates());
-        System.out.println(test.transitionTable.getInnerKeys());
     }
 }

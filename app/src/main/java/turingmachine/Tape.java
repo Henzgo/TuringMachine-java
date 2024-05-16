@@ -3,7 +3,6 @@ package turingmachine;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Arrays;
 
 public class Tape {
     private ArrayList<String> tape = new ArrayList<>();
@@ -17,7 +16,6 @@ public class Tape {
         this.input = input;
         initialize(input);
         fillEmpty(input);
-        //findArrayMiddle();
         converter();
     }
 
@@ -31,17 +29,8 @@ public class Tape {
         }
     }
 
-    // public void converter() {
-    //     String[] stringArray = eingabeWort.split("");
-    //     System.out.println(Arrays.toString(stringArray));
-    //     for (String i : stringArray) {
-    //         tape.add(tapeHeadPosition, i);
-    //         //System.out.println(tape.toString());
-    //     }
-    // }
-
     public void converter() {
-        int middleIndex = tape.size() / 2;  // Find the middle of the tape
+        int middleIndex = tape.size() / 2;
         String[] stringArray = eingabeWort.split("");
         int startIndex = middleIndex - stringArray.length / 2;  // Start adding input word at this index
 
@@ -49,14 +38,6 @@ public class Tape {
             tape.set(startIndex + i, stringArray[i]);  // Set, not add, to replace the blanks
         }
         tapeHeadPosition = startIndex;  // Set the tape head to start at the middle of the input word
-    }
-
-    private String convertSymbol(int length) {
-        if (length == 1) return "0";
-        if (length == 2) return "1";
-        if (length == 3) return "_"; // Blank
-        // Further encoding as needed
-        return Character.toString((char) ('a' + length - 4)); // Assuming sequential character encoding after 'a'
     }
 
     public String getCurrentSymbol() {
@@ -71,12 +52,10 @@ public class Tape {
 
     private int symbolToIndex(String symbol) {
         switch (symbol) {
-            case "_": return 2;  // Assuming "_" maps to 2 based on your encoding
+            case "_": return 2;
             case "0": return 0;
             case "1": return 1;
-            // Add more cases as needed
             default:
-                // Handle unknown symbols, perhaps throw an exception or default to 0
                 return 0;
         }
     }
@@ -113,10 +92,6 @@ public class Tape {
         }
     }
 
-    private void findArrayMiddle() {
-        tapeHeadPosition = tape.size() / 2;
-    }
-
     public int getTapeHeadPosition() {
         return tapeHeadPosition;
     }
@@ -125,12 +100,12 @@ public class Tape {
         System.out.println(this.toString());
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (String cell : tape) {
-            sb.append("[ ").append(cell).append(" ] ");
-        }
-        return sb.toString();
-    }
+    // @Override
+    // public String toString() {
+    //     StringBuilder sb = new StringBuilder();
+    //     for (String cell : tape) {
+    //         sb.append("[ ").append(cell).append(" ] ");
+    //     }
+    //     return sb.toString();
+    // }
 }
