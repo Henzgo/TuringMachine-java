@@ -47,11 +47,24 @@ public class Tape {
 
     public void moveTapeHead(Direction direction) {
         if (direction == Direction.L) {
-            tapeHeadPosition--;
+            if (tapeHeadPosition > 0) tapeHeadPosition--;
         } else if (direction == Direction.R) {
-            tapeHeadPosition++;
+            if (tapeHeadPosition < tape.size() - 1) tapeHeadPosition++;
+            else tape.add("");
         }
-        // Todo: Check if ensureCapacity method is needed.
+    }
+
+    public void printTapeWindow(int windowSize) {
+        int start = Math.max(0, tapeHeadPosition - windowSize);
+        int end = Math.min(tape.size(), tapeHeadPosition + windowSize);
+        for (int i = start; i < end; i++) {
+            if (i == tapeHeadPosition) {
+                System.out.print("[" + tape.get(i) + "]");
+            } else {
+                System.out.print(" " + tape.get(i) + " ");
+            }
+        }
+        System.out.println();
     }
 
     private void fillEmpty(String input) {
